@@ -1,0 +1,7 @@
+{
+  "name": "Ingenia tus Finanzas",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
