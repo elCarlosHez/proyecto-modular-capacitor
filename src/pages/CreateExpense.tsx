@@ -19,23 +19,23 @@ import { useState } from "react";
 import { fetchBackend } from "../hooks/fetchBackend";
 import { useNavigate } from "react-router-dom";
 
-export const CreateIncome = () => {
-  const [date, setDate] = useState(new Date());
+export const CreateExpense = () => {
+  const [expenseDate, setExpenseDate] = useState(new Date());
   const [name, setName] = useState<string>();
   const [amount, setAmount] = useState<number>();
   const [type, setType] = useState<string>();
-  const [periodicity, setPeriodicity] = useState('diario');
+  const [periodicity, setPeriodicity] = useState<string>('diario');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const saveIncome = async () => {
+  const saveExpense = async () => {
     setLoading(true);
-    await fetchBackend("/api/income", {
+    await fetchBackend("/api/expense", {
       name,
       amount,
       type,
       periodicity,
-      income_date: date,
+      expense_date: expenseDate,
     });
     navigate('/');
   };
@@ -43,11 +43,11 @@ export const CreateIncome = () => {
   return (
     <Grid px={4}>
       <Typography variant="h4" my={5}>
-        Agregar ingreso
+        Agregar gasto
       </Typography>
       <TextField
         fullWidth={true}
-        label="Nombre del ingreso"
+        label="Nombre del gasto"
         variant="outlined"
         margin="normal"
         value={name}
@@ -98,10 +98,9 @@ export const CreateIncome = () => {
             labelId="periodicity-label"
             label="Frecuencia del gasto"
             onChange={(event) => {
-              setPeriodicity(event.target.value as string);
+              setPeriodicity(event.target.value);
             }}
             value={periodicity}
-            defaultValue="diario"
           >
             <MenuItem value="diario">Diario</MenuItem>
             <MenuItem value="semanal">Semanal</MenuItem>
@@ -114,11 +113,11 @@ export const CreateIncome = () => {
       )}
 
       <MobileDatePicker
-        label="Fecha del ingreso"
+        label="Fecha del gasto"
         inputFormat="dd/MM/yyyy"
-        value={date}
+        value={expenseDate}
         onChange={(newValue: any) => {
-          setDate(new Date(newValue));
+          setExpenseDate(new Date(newValue));
         }}
         renderInput={(params: any) => (
           <TextField fullWidth={true} margin="normal" {...params} />
@@ -129,9 +128,9 @@ export const CreateIncome = () => {
           loading={loading}
           fullWidth={true}
           variant="contained"
-          onClick={saveIncome}
+          onClick={saveExpense}
         >
-          Añadir ingreso
+          Añadir gasto
         </LoadingButton>
       </Box>
     </Grid>
