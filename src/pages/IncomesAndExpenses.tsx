@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
 import {
   ExpenseOrIncome,
   ExpenseOrIncomeType,
@@ -7,6 +7,7 @@ import {
 import { MonthTitle } from "../components/MonthTitle";
 import { fetchBackend } from "../hooks/fetchBackend";
 import { useNavigate } from "react-router-dom";
+import { PrincipalPage } from "../layout/PrincipalPage";
 
 const fakeData = [
   {
@@ -36,7 +37,7 @@ export const IncomesAndExpenses = (): JSX.Element => {
   }, []);
 
   return (
-    <Grid justifyContent="center" px={4}>
+    <PrincipalPage>
       <Typography textAlign="center" mt={5} variant="h2" component="h1">
         $700
       </Typography>
@@ -86,6 +87,6 @@ export const IncomesAndExpenses = (): JSX.Element => {
       >
         Agregar gasto
       </Button>
-    </Grid>
+    </PrincipalPage>
   );
 };
