@@ -8,12 +8,15 @@ import React, {
 } from 'react';
 import { fetchBackend } from '../hooks/fetchBackend';
 import { initializeApp } from "firebase/app";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { getAuth, signInAnonymously, linkWithCredential, EmailAuthProvider, User, Auth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import firebaseConfig from './firebase_keys.json';
 
 interface IAuthContext {
-  firebaseAuth: any;
+  firebaseAuth: Auth;
   token: string;
+  signupUser: (email: string, password: string) => Promise<User | null>;
+  signInUSer: (email: string, password: string) => Promise<User | null>;
+  logoutUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
@@ -25,15 +28,15 @@ interface IAuthProvider {
 const app = initializeApp(firebaseConfig);
 
 export const AuthProvider = (props: IAuthProvider): JSX.Element => {
-  const {children} = props;
+  const { children } = props;
   const firebaseAuth = useMemo(() => getAuth(app), []);
   const [token, setToken] = useState<string>('');
 
   const checkUser = useCallback(async () => {
     // Check if we have a storage token
     let previousToken = localStorage.getItem('token');
-    
-    if(previousToken){
+
+    if (previousToken) {
       setToken(previousToken);
       return;
     }
@@ -54,6 +57,41 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
     }
   }, [firebaseAuth]);
 
+  const signupUser = useCallback(async (email: string, password: string): Promise<User | null> => {
+    if (firebaseAuth.currentUser) {
+      try {
+        const credential = EmailAuthProvider.credential(email, password);
+        const newUser = await linkWithCredential(firebaseAuth.currentUser, credential);
+        return newUser.user;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    return null;
+  }, [firebaseAuth]);
+
+  const signInUSer = useCallback(async (email: string, password: string): Promise<User | null> => {
+    try {
+      const user = await signInWithEmailAndPassword(firebaseAuth, email, password);
+      localStorage.removeItem('token');
+      await checkUser();
+      return user.user;
+    } catch (error) {
+      console.log(error);
+    }
+    return null;
+  }, [firebaseAuth, checkUser]);
+
+  const logoutUser = useCallback(async (): Promise<void> => {
+    try {
+      await signOut(firebaseAuth);
+      localStorage.removeItem('token');
+      await checkUser();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [firebaseAuth]);
+
   useEffect(() => {
     checkUser();
   }, [firebaseAuth, checkUser]);
@@ -63,6 +101,9 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
       value={{
         firebaseAuth,
         token,
+        signupUser,
+        signInUSer,
+        logoutUser,
       }}>
       {children}
     </AuthContext.Provider>

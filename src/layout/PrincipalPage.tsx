@@ -1,11 +1,13 @@
 import { AssuredWorkload, DirectionsCar, Person, Savings } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Grid, Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface IPrincipalPage {
     children: React.ReactNode;
 }
 
 export const PrincipalPage = (props: IPrincipalPage) => {
+    const navigation = useNavigate();
     return (
         <Grid justifyContent="center" px={4}>
             {props.children}
@@ -17,10 +19,11 @@ export const PrincipalPage = (props: IPrincipalPage) => {
                     <BottomNavigationAction label="Finanzas" icon={<Savings />} />
                     <BottomNavigationAction label="Metas" icon={<DirectionsCar />} />
                     <BottomNavigationAction
+                        onClick={() => navigation('/impuestos')}
                         label="Impuestos"
                         icon={<AssuredWorkload />}
                     />
-                    <BottomNavigationAction label="Perfil" icon={<Person />} />
+                    <BottomNavigationAction onClick={() => navigation('/perfil')} label="Perfil" icon={<Person />} />
                 </BottomNavigation>
             </Paper>
         </Grid>
