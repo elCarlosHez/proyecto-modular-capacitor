@@ -10,6 +10,7 @@ import { fetchBackend } from '../hooks/fetchBackend';
 import { initializeApp } from "firebase/app";
 import { getAuth, signInAnonymously, linkWithCredential, EmailAuthProvider, User, Auth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import firebaseConfig from './firebase_keys.json';
+import { useNavigate } from 'react-router-dom';
 
 interface IAuthContext {
   firebaseAuth: Auth;
@@ -31,6 +32,7 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
   const { children } = props;
   const firebaseAuth = useMemo(() => getAuth(app), []);
   const [token, setToken] = useState<string>('');
+  //const navigate = useNavigate();
 
   const checkUser = useCallback(async () => {
     // Check if we have a storage token
@@ -38,6 +40,7 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
 
     if (previousToken) {
       setToken(previousToken);
+      //navigate('/impuestos');
       return;
     }
 
@@ -70,16 +73,11 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
     return null;
   }, [firebaseAuth]);
 
-  const signInUSer = useCallback(async (email: string, password: string): Promise<User | null> => {
-    try {
-      const user = await signInWithEmailAndPassword(firebaseAuth, email, password);
-      localStorage.removeItem('token');
-      await checkUser();
-      return user.user;
-    } catch (error) {
-      console.log(error);
-    }
-    return null;
+  const signInUSer = useCallback(async (email: string, password: string): Promise<User> => {
+    const user = await signInWithEmailAndPassword(firebaseAuth, email, password);
+    localStorage.removeItem('token');
+    await checkUser();
+    return user.user;
   }, [firebaseAuth, checkUser]);
 
   const logoutUser = useCallback(async (): Promise<void> => {

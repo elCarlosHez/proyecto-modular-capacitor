@@ -12,27 +12,34 @@ import { Onboarding } from "./pages/Onboarding";
 import { Perfil } from "./pages/Perfil";
 import { AuthProvider } from "./contexts/AuthContext";
 import { UpdateDeductions } from "./pages/UpdateDeductions";
-import { Login } from "@mui/icons-material";
+import { Login } from "./pages/Login";
+import { Investments } from "./pages/Investments";
+import { InvestmentProvider } from "./contexts/InvestmentContext";
+import { InvestmentProjection } from "./pages/InvestmentProjection";
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
       <CssBaseline>
         <LocalizationProvider dateAdapter={AdapterLuxon}>
-          <BrowserRouter>
-            <Routes>
-              <Route index element={<Onboarding />} />
-              <Route path="presupuesto" element={<IncomesAndExpenses />}>
-                <Route path="agregar-ingreso" element={<CreateIncome />} />
-                <Route path="agregar-gasto" element={<CreateExpense />} />
-              </Route>
-              <Route path="impuestos" element={<TaxesView />} />
-              <Route path="/impuestos/modificar-deducciones" element={<UpdateDeductions />} />
-              <Route path="perfil" element={<Perfil />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
-          </BrowserRouter>
+          <InvestmentProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route index element={<Onboarding />} />
+                <Route path="presupuesto" element={<IncomesAndExpenses />}>
+                  <Route path="agregar-ingreso" element={<CreateIncome />} />
+                  <Route path="agregar-gasto" element={<CreateExpense />} />
+                </Route>
+                <Route path="impuestos" element={<TaxesView />} />
+                <Route path="/impuestos/modificar-deducciones" element={<UpdateDeductions />} />
+                <Route path="perfil" element={<Perfil />} />
+                <Route path="login" element={<Login />} />
 
+                <Route path="estrategias" element={<Investments />} />
+                <Route path="/estrategias/proyeccion" element={<InvestmentProjection />} />
+              </Routes>
+            </BrowserRouter>
+          </InvestmentProvider>
         </LocalizationProvider>
       </CssBaseline>
     </AuthProvider>

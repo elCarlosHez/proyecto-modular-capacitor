@@ -1,11 +1,23 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const { signInUSer } = useAuthContext();
+
+    const login = async () => {
+        try {
+            const user = await signInUSer(email, password);
+            console.log(user);
+            navigate('/impuestos');
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Grid justifyContent="center" px={4}>
@@ -32,12 +44,12 @@ export const Login = () => {
                     setPassword(event.target.value);
                 }}
             />
-            <Box mt={2}>
-                <Button onClick={() => { }} fullWidth={true} variant="contained" >
+            <Box mt={3} mb={2}>
+                <Button onClick={login} fullWidth={true} variant="contained" >
                     Ingresar
                 </Button>
             </Box>
-            <Button onClick={() => navigate(-1)} fullWidth={true} variant="contained" >
+            <Button onClick={() => navigate(-1)} fullWidth={true} variant="outlined" >
                 Regresar
             </Button>
         </Grid>

@@ -78,7 +78,7 @@ export const Onboarding = (): JSX.Element => {
                     Continuar
                 </Button>
             </Box>
-            <Link to="/iniciar-sesion">¿Ya tienes una cuenta?</Link>
+            <Link to="/login">¿Ya tienes una cuenta?</Link>
         </Grid>
     );
 }

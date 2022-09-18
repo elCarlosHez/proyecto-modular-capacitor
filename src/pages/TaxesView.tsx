@@ -1,12 +1,12 @@
-import { Box, Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchBackend } from "../hooks/fetchBackend";
 import { PrincipalPage } from "../layout/PrincipalPage";
+import { currencyFormat } from "../utils/currencyFormat";
 
 export const TaxesView = (): JSX.Element => {
     const [data, setData] = useState<any>();
-    const currencyFormat = useMemo(() => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }), []);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,7 +14,11 @@ export const TaxesView = (): JSX.Element => {
             const data = await fetchBackend('/api/taxes', {}, 'GET');
             setData(data);
         };
-        getDataFromBackend();
+        try {
+            getDataFromBackend();
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     const UpdateDeductions = (): void => {
