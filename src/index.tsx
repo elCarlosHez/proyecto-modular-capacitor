@@ -26,15 +26,13 @@ ReactDOM.render(
             <BrowserRouter>
               <Routes>
                 <Route index element={<Onboarding />} />
-                <Route path="presupuesto" element={<IncomesAndExpenses />}>
-                  <Route path="agregar-ingreso" element={<CreateIncome />} />
-                  <Route path="agregar-gasto" element={<CreateExpense />} />
-                </Route>
+                <Route path="presupuesto" element={<IncomesAndExpenses />} />
+                <Route path="/presupuesto/agregar-ingreso" element={<CreateIncome />} />
+                <Route path="/presupuesto/agregar-gasto" element={<CreateExpense />} />
                 <Route path="impuestos" element={<TaxesView />} />
                 <Route path="/impuestos/modificar-deducciones" element={<UpdateDeductions />} />
                 <Route path="perfil" element={<Perfil />} />
                 <Route path="login" element={<Login />} />
-
                 <Route path="estrategias" element={<Investments />} />
                 <Route path="/estrategias/proyeccion" element={<InvestmentProjection />} />
               </Routes>

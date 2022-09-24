@@ -8,6 +8,7 @@ import { MonthTitle } from "../components/MonthTitle";
 import { fetchBackend } from "../hooks/fetchBackend";
 import { useNavigate } from "react-router-dom";
 import { PrincipalPage } from "../layout/PrincipalPage";
+import { currencyFormat } from "../utils/currencyFormat";
 
 const fakeData = [
   {
@@ -26,67 +27,69 @@ const fakeData = [
 
 export const IncomesAndExpenses = (): JSX.Element => {
   const [data, setData] = useState([]);
+  const [resume, setResume] = useState(0);
   let navigate = useNavigate();
 
   useEffect(() => {
-    // const getData = async () => {
-    //   let response = await fetchBackend("/api/income", {}, "GET");
-    //   setData(response);
-    // };
-    // getData();
+    const getData = async () => {
+      let response = await fetchBackend("/api/expense", {}, "GET");
+      setData(response);
+    };
+
+    const getResume = async () => {
+      let resume = await fetchBackend("/api/expense/resume", {}, "GET");
+      setResume(resume);
+    }
+
+    getResume();
+    getData();
   }, []);
 
   return (
     <PrincipalPage>
-      <Typography textAlign="center" mt={5} variant="h2" component="h1">
-        $700
+      <Typography textAlign="center" mt={5} variant="h3" component="h1">
+        {currencyFormat.format(resume)}
       </Typography>
       <Typography
         textAlign="center"
         mt={2}
         mb={4}
-        variant="body2"
+        variant="body1"
         component="p"
       >
         Presupuesto
       </Typography>
-      <MonthTitle title="Julio 2022" />
-      {data.map((item: any) => (
-        <ExpenseOrIncome
-          type={"income"}
-          title={item.name}
-          date={item.income_date}
-          price={item.amount}
-        />
-      ))}
-      {fakeData.map((data) => (
-        <ExpenseOrIncome
-          type={data.type as ExpenseOrIncomeType}
-          title={data.title}
-          date={data.date}
-          price={data.price}
-        />
-      ))}
-      <Box mt={5} mb={2}>
+      {
+        Object.keys(data).map((key: string, index) => {
+          return (
+            <>
+              <MonthTitle key={`title-${index}`} title={key} />
+              {
+                // @ts-ignore
+                data[key].map(item =>
+                  <ExpenseOrIncome
+                    type={"income"}
+                    title={item.name}
+                    date={new Date(item.expense_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'long' })}
+                    price={item.amount}
+                  />
+                )
+              }
+            </>
+          );
+        })
+      }
+      <Box my={4}>
         <Button
           fullWidth={true}
           variant="contained"
           onClick={() => {
-            navigate("/agregar-ingreso");
+            navigate("agregar-gasto");
           }}
         >
-          Agregar ingreso
+          Agregar gasto
         </Button>
       </Box>
-      <Button
-        fullWidth={true}
-        variant="outlined"
-        onClick={() => {
-          navigate("/agregar-gasto");
-        }}
-      >
-        Agregar gasto
-      </Button>
     </PrincipalPage>
   );
 };

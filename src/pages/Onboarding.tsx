@@ -1,11 +1,13 @@
 import { Button, Grid, InputAdornment, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
 import { fetchBackend } from "../hooks/fetchBackend";
 
 export const Onboarding = (): JSX.Element => {
+    const { isTempUser } = useAuthContext();
     const [name, setName] = useState('');
     const [nameError, setNameError] = useState(false);
     const [salary, setSalary] = useState('');
@@ -41,6 +43,12 @@ export const Onboarding = (): JSX.Element => {
         }
     };
 
+    useEffect(() => {
+        if(!isTempUser()){
+            navigate('/impuestos')
+        }
+    }, []);
+
     return (
         <Grid justifyContent="center" px={4}>
             <Typography variant="h4" mt={3}>Hola!</Typography>
@@ -66,7 +74,6 @@ export const Onboarding = (): JSX.Element => {
                 helperText={!!salaryError && "Este cambo es requerido."}
                 InputProps={{
                     startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                    //endAdornment: <Cancel />,
                 }}
                 value={salary}
                 onChange={(event) => {

@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -37,7 +38,7 @@ export const CreateExpense = () => {
       periodicity,
       expense_date: expenseDate,
     });
-    navigate('/');
+    navigate('/presupuesto');
   };
 
   return (
@@ -59,7 +60,6 @@ export const CreateExpense = () => {
         fullWidth={true}
         InputProps={{
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
-          //endAdornment: <Cancel />,
         }}
         label="Cantidad"
         variant="outlined"
@@ -132,6 +132,15 @@ export const CreateExpense = () => {
         >
           Añadir gasto
         </LoadingButton>
+      </Box>
+      <Box mt={1}>
+        <Button
+          fullWidth={true}
+          variant="outlined"
+          onClick={() => navigate('/presupuesto')}
+        >
+          Regresar
+        </Button>
       </Box>
     </Grid>
   );

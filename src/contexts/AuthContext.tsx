@@ -18,6 +18,7 @@ interface IAuthContext {
   signupUser: (email: string, password: string) => Promise<User | null>;
   signInUSer: (email: string, password: string) => Promise<User | null>;
   logoutUser: () => Promise<void>;
+  isTempUser: () => boolean;
 }
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
@@ -80,6 +81,10 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
     return user.user;
   }, [firebaseAuth, checkUser]);
 
+  const isTempUser = useCallback((): boolean => {
+    return !!firebaseAuth.currentUser?.isAnonymous;
+  }, [firebaseAuth]);
+
   const logoutUser = useCallback(async (): Promise<void> => {
     try {
       await signOut(firebaseAuth);
@@ -102,6 +107,7 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
         signupUser,
         signInUSer,
         logoutUser,
+        isTempUser,
       }}>
       {children}
     </AuthContext.Provider>

@@ -16,7 +16,7 @@ export const PrincipalPage = (props: IPrincipalPage) => {
                 elevation={3}
             >
                 <BottomNavigation showLabels>
-                    <BottomNavigationAction label="Finanzas" icon={<Savings />} />
+                    <BottomNavigationAction label="Finanzas" onClick={() => navigation('/presupuesto')} icon={<Savings />} />
                     <BottomNavigationAction label="Estrategias" onClick={() => navigation('/estrategias')} icon={<DirectionsCar />} />
                     <BottomNavigationAction
                         onClick={() => navigation('/impuestos')}
