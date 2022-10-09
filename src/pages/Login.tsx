@@ -13,6 +13,7 @@ export const Login = () => {
         try {
             const user = await signInUSer(email, password);
             console.log(user);
+            localStorage.setItem('onboarding_done', "true");
             navigate('/impuestos');
         } catch (error) {
             console.log(error);

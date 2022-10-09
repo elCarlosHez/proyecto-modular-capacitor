@@ -36,6 +36,7 @@ export const Onboarding = (): JSX.Element => {
                 name,
                 salary,
             });
+            localStorage.setItem('onboarding_done', "true");
             navigate('/impuestos');
         } catch (error) {
             console.log(error);
@@ -44,8 +45,8 @@ export const Onboarding = (): JSX.Element => {
     };
 
     useEffect(() => {
-        if(!isTempUser()){
-            navigate('/impuestos')
+        if(localStorage.getItem('onboarding_done')){
+            navigate('/impuestos');
         }
     }, []);
 

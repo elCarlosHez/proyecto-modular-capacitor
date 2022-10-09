@@ -33,7 +33,6 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
   const { children } = props;
   const firebaseAuth = useMemo(() => getAuth(app), []);
   const [token, setToken] = useState<string>('');
-  //const navigate = useNavigate();
 
   const checkUser = useCallback(async () => {
     // Check if we have a storage token
@@ -89,6 +88,7 @@ export const AuthProvider = (props: IAuthProvider): JSX.Element => {
     try {
       await signOut(firebaseAuth);
       localStorage.removeItem('token');
+      localStorage.removeItem('onboarding_done');
       await checkUser();
     } catch (error) {
       console.log(error);
