@@ -16,29 +16,60 @@ import { Login } from "./pages/Login";
 import { Investments } from "./pages/Investments";
 import { InvestmentProvider } from "./contexts/InvestmentContext";
 import { InvestmentProjection } from "./pages/InvestmentProjection";
+import { UserData } from "./pages/UserData";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#6750A4',
+    },
+    secondary: {
+      main: '#79747E',
+    },
+  },
+  typography: {
+    h4: {
+      color: '#6750A4',
+    }
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '100px',
+        }
+      }
+    }
+  }
+});
+
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
       <CssBaseline>
-        <LocalizationProvider dateAdapter={AdapterLuxon}>
-          <InvestmentProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route index element={<Onboarding />} />
-                <Route path="presupuesto" element={<IncomesAndExpenses />} />
-                <Route path="/presupuesto/agregar-ingreso" element={<CreateIncome />} />
-                <Route path="/presupuesto/agregar-gasto" element={<CreateExpense />} />
-                <Route path="impuestos" element={<TaxesView />} />
-                <Route path="/impuestos/modificar-deducciones" element={<UpdateDeductions />} />
-                <Route path="perfil" element={<Perfil />} />
-                <Route path="login" element={<Login />} />
-                <Route path="estrategias" element={<Investments />} />
-                <Route path="/estrategias/proyeccion" element={<InvestmentProjection />} />
-              </Routes>
-            </BrowserRouter>
-          </InvestmentProvider>
-        </LocalizationProvider>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterLuxon}>
+            <InvestmentProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route index element={<Onboarding />} />
+                  <Route path="presupuesto" element={<IncomesAndExpenses />} />
+                  <Route path="/presupuesto/agregar-ingreso" element={<CreateIncome />} />
+                  <Route path="/presupuesto/agregar-gasto" element={<CreateExpense />} />
+                  <Route path="impuestos" element={<TaxesView />} />
+                  <Route path="/impuestos/modificar-deducciones" element={<UpdateDeductions />} />
+                  <Route path="perfil" element={<Perfil />} />
+                  <Route path="/perfil/actualizar-datos" element={<UserData />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="estrategias" element={<Investments />} />
+                  <Route path="/estrategias/proyeccion" element={<InvestmentProjection />} />
+                </Routes>
+              </BrowserRouter>
+            </InvestmentProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
       </CssBaseline>
     </AuthProvider>
   </React.StrictMode>,
