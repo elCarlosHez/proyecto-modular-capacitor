@@ -24,7 +24,7 @@ export const CreateExpense = () => {
   const [expenseDate, setExpenseDate] = useState(new Date());
   const [name, setName] = useState<string>();
   const [amount, setAmount] = useState<number>();
-  const [type, setType] = useState<string>();
+  const type = 'unique';
   const [periodicity, setPeriodicity] = useState<string>('diario');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ export const CreateExpense = () => {
           setAmount(parseFloat(event.target.value));
         }}
       />
-      <FormControl margin="normal">
+      {/* <FormControl margin="normal">
         <FormLabel id="demo-row-radio-buttons-group-label">
           Tipo de ingreso
         </FormLabel>
@@ -110,7 +110,7 @@ export const CreateExpense = () => {
             <MenuItem value="anual">Anual</MenuItem>
           </Select>
         </FormControl>
-      )}
+      )} */}
 
       <MobileDatePicker
         label="Fecha del gasto"

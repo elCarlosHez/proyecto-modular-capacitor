@@ -1,7 +1,7 @@
 import { Alert, Button, Snackbar, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import { fetchBackend } from "../hooks/fetchBackend";
 
@@ -11,15 +11,19 @@ export const AnonymusProfile = () => {
     const [confirmPassword, setconfirmPassword] = useState('');
     const [modal, setModal] = useState(false);
     const { signupUser } = useAuthContext();
+    const navigate = useNavigate();
 
     const registrarUsuario = async () => {
         if (password === confirmPassword) {
             try {
                 const user = await signupUser(email, password);
-                await fetchBackend('/api/migrate-user', {
-                    'firebaseUID': user?.uid
-                }, 'POST');
+                if (user?.uid) {
+                    await fetchBackend('/api/migrate-user', {
+                        'firebaseUID': user?.uid
+                    }, 'POST');
+                }
                 setModal(true);
+                navigate('/impuestos');
             } catch (error) {
                 console.log(error);
             }

@@ -68,6 +68,7 @@ export const IncomesAndExpenses = (): JSX.Element => {
                 // @ts-ignore
                 data[key].map(item =>
                   <ExpenseOrIncome
+                    key={`expense-${item.name}`}
                     type={"income"}
                     title={item.name}
                     date={new Date(item.expense_date).toLocaleDateString('es-MX', { day: 'numeric', month: 'long' })}
