@@ -105,7 +105,7 @@ export const TaxesView = (): JSX.Element => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Box mt={2}>
+                <Box mt={2} mb={10}>
                     <Button onClick={UpdateDeductions} fullWidth={true} variant="contained" >
                         Modificar las deducciones
                     </Button>
